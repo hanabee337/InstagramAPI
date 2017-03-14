@@ -1,3 +1,8 @@
+"""
+MEDIA 세팅
+    MEDIA_URL, MEDIA_ROOT가 제대로 동작하도록 settings.py에 설정
+    MEDIA_ROOT는 django_app/media의 위치를 사용
+"""
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -35,6 +40,7 @@ def post_create(request):
         return HttpResponse('{}'.format(post.pk))
     else:
         return HttpResponse('Post create view')
+
 
 @csrf_exempt
 def post_photo_add(request):
