@@ -36,18 +36,19 @@ def post_list(request):
         cur_post_dict = {
             'pk': post.pk,
             'photo_list': [],
+            'created_date': post.created_date,
             'author': {
                 'pk': post.author.pk,
                 'username': post.author.username,
             }
         }
-        first_photo = post.postphoto_set.first()
-        if first_photo:
-            first_photo_dict = {
-                'pk': first_photo.pk,
-                'photo': first_photo.photo.url,
+        photo_list = post.postphoto_set.all()
+        for post_photo in photo_list:
+            photo_dict = {
+                'pk': post_photo.pk,
+                'photo': post_photo.photo.url,
             }
-            cur_post_dict['photo_list'] = first_photo_dict
+            cur_post_dict['photo_list'].append(photo_dict)
 
         post_dict_list.append(cur_post_dict)
 
