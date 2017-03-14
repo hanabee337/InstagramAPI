@@ -5,12 +5,39 @@ MEDIA 세팅
 """
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from post.models import Post, PostPhoto
 
 User = get_user_model()
 
+def post_list(request):
+    """
+    JsonResponse를 이용해서 Post.objects.all()에 해당하는 객체 리스트를 리턴해본다.
+    """
+    # 하기와 같이 할 경우, 아래와 같은 에러 발생함. 따라서, Json 형식으로 변환해줘야 함.
+    # <QuerySet [<Post: Post object>, <Post: Post object>]> is not JSON serializable.
+    # post = Post.objects.all()
+    # context = {
+    #     'post_list': post
+    # }
+
+    # 그런데, 인스턴스를 바로 Json형식으로 변환하는 것이 안되기 때문에,
+    # dict형태로 변환시켜준다.
+    post_list = Post.objects.all()
+    post_dict_list = []
+    for post in post_list:
+        cur_post_dict = {
+            'pk': post.pk,
+            'author': post.author.pk
+        }
+        post_dict_list.append(cur_post_dict)
+
+    context = {
+        'post_list': post_dict_list,
+    }
+    return JsonResponse(data=context)
 
 @csrf_exempt
 def post_create(request):
