@@ -12,6 +12,7 @@ from post.models import Post, PostPhoto
 
 User = get_user_model()
 
+
 def post_list(request):
     """
     JsonResponse를 이용해서 Post.objects.all()에 해당하는 객체 리스트를 리턴해본다.
@@ -29,20 +30,32 @@ def post_list(request):
     # 효율적인 query를 위해 selecte_related 사용
     post_list = Post.objects.select_related('author')
     post_dict_list = []
+    # 전체 Post를 loop
     for post in post_list:
+        # 각 Photo의 정보
         cur_post_dict = {
             'pk': post.pk,
+            'photo_list': [],
             'author': {
                 'pk': post.author.pk,
                 'username': post.author.username,
             }
         }
+        first_photo = post.postphoto_set.first()
+        if first_photo:
+            first_photo_dict = {
+                'pk': first_photo.pk,
+                'photo': first_photo.photo.url,
+            }
+            cur_post_dict['photo_list'] = first_photo_dict
+
         post_dict_list.append(cur_post_dict)
 
     context = {
         'post_list': post_dict_list,
     }
     return JsonResponse(data=context)
+
 
 @csrf_exempt
 def post_create(request):
