@@ -14,7 +14,7 @@ class Post(models.Model):
         ret = {
             'pk': self.pk,
             'created_date': self.created_date,
-            'author': self.author.pk,
+            'author': self.author.to_dict(),
             'photo_list': [photo.to_dict() for photo in self.postphoto_set.all()]
         }
         return ret
