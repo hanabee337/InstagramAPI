@@ -27,7 +27,7 @@ def post_list(request):
     # 그런데, 인스턴스를 바로 Json형식으로 변환하는 것이 안되기 때문에,
     # dict형태로 변환시켜준다.
     # post_list = Post.objects.all()
-    # 효율적인 query를 위해 selecte_related 사용
+    # 효율적인 query를 위해 select_related 사용
     # post_list = Post.objects.select_related('author')
     # post_dict_list = []
     # # 전체 Post를 loop
@@ -57,7 +57,7 @@ def post_list(request):
     # }
 
     context = {
-        'post_list': [post.to_dict() for post in Post.objects.all()]
+        'post_list': [post.to_dict() for post in Post.objects.select_related()]
     }
     return JsonResponse(data=context)
 
