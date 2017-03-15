@@ -15,6 +15,7 @@ class Post(models.Model):
             'pk': self.pk,
             'created_date': self.created_date,
             'author': self.author.pk,
+            'photo_list': [photo.to_dict() for photo in self.postphoto_set.all()]
         }
         return ret
 
@@ -25,3 +26,10 @@ class PostPhoto(models.Model):
 
     class Meta:
         order_with_respect_to = 'post'
+
+    def to_dict(self):
+        ret = {
+            'pk': self.pk,
+            'photo': self.photo.url,
+        }
+        return ret
