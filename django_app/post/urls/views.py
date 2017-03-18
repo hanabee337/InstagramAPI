@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from . import views
+from post import views
 
 # app_name = 'post'
 urlpatterns = [
