@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.urls import NoReverseMatch
 from django.urls import resolve
 from django.urls import reverse
+from django.utils.crypto import random
 from rest_framework import status
 from rest_framework.test import APILiveServerTestCase
 
@@ -71,7 +72,19 @@ class PostTest(APILiveServerTestCase):
         self.assertEqual(Post.objects.exists(), False)
 
     def test_post_list(self):
-        pass
+        # Post 생성 위해 유저 생성 후 로그인
+
+        # 생성할 Post 개수 지정
+
+        # num만큼 Post 생성
+
+        # Post를 생성하는 API주소를 reverse
+
+        # Post를 생성하는 API주소에 POST요청, response를 받아옴
+
+        # status_code 확인
+
+        # num만큼 생성되었는지 확인
 
     def test_post_update(self):
         pass
