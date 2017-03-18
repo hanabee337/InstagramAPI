@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.urls import NoReverseMatch
 from django.urls import resolve
 from django.urls import reverse
@@ -7,28 +6,10 @@ from rest_framework import status
 from rest_framework.test import APILiveServerTestCase
 
 from post.models import Post
+from utils.testcase import APITestCaseAuthMixin
 
-User = get_user_model()
 
-
-class PostTest(APILiveServerTestCase):
-    test_username = 'test_username'
-    test_password = 'test_password'
-
-    def create_user(self):
-        user = User.objects.create_user(
-            username=self.test_username,
-            password=self.test_password,
-        )
-        return user
-
-    def create_user_and_login(self):
-        self.create_user()
-        self.client.login(
-            username=self.test_username,
-            password=self.test_password,
-        )
-
+class PostTest(APITestCaseAuthMixin, APILiveServerTestCase):
     def create_post(self, num=1):
         """
         :param num: 생성할 Post수
@@ -87,7 +68,7 @@ class PostTest(APILiveServerTestCase):
 
     def test_post_list(self):
         # Post 생성 위해 유저 생성 후 로그인
-        self.create_user_and_login()
+        self.create_user_and_login(self.client)
 
         # 생성할 Post 개수 지정
         num = random.randrange(1, 50)
