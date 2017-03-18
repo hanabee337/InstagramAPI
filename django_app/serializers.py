@@ -11,6 +11,7 @@ class PostSerializer(serializers.ModelSerializer):
         fields = (
             'pk',
             'author',
+            'created_date',
         )
         read_only_fields = (
             'created_date',
