@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.urls import NoReverseMatch
+from django.urls import resolve
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APILiveServerTestCase
@@ -22,10 +23,11 @@ class PostTest(APILiveServerTestCase):
 
     def test_apis_url_exist(self):
         try:
-            url = reverse('api:post-list')
-            print('url: {}'.format(url))
-            url = reverse('api:post-detail')
-            print('url: {}'.format(url))
+            # PostList
+            resolve('/api/post/')
+
+            # PostDetail
+            resolve('/api/post/1/')
         except NoReverseMatch as e:
             self.fail(e)
 
