@@ -39,7 +39,7 @@ class PostTest(APILiveServerTestCase):
             password=self.test_password,
         )
         # Post를 생성하는 API주소를 reverse
-        url = reverse('post-create')
+        url = reverse('api:post-list')
         # Post를 생성하는 API주소에 POST요청, response를 받아옴
         response = self.client.post(url)
 
