@@ -21,6 +21,20 @@ class PostTest(APILiveServerTestCase):
         )
         return user
 
+    def create_post(self, num=1):
+        """
+        :param num: 생성할 Post수
+        :return: num == 1일 경우, 생성 요청의 response
+        """
+
+        # Post를 생성하는 API주소를 reverse
+        url = reverse('api:post-list')
+        # Post를 생성하는 API주소에 POST요청, response를 받아옴
+        for i in range(num):
+            response = self.client.post(url)
+            if num == 1:
+                return response
+
     def test_apis_url_exist(self):
         try:
             # PostList
@@ -38,10 +52,8 @@ class PostTest(APILiveServerTestCase):
             username=self.test_username,
             password=self.test_password,
         )
-        # Post를 생성하는 API주소를 reverse
-        url = reverse('api:post-list')
-        # Post를 생성하는 API주소에 POST요청, response를 받아옴
-        response = self.client.post(url)
+
+        response = self.create_post()
 
         # response의 status_code가 201(Created)이어야 함
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
