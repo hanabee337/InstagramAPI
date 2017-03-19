@@ -53,6 +53,15 @@ class PostTest(APITestCaseAuthMixin, APILiveServerTestCase):
         # response의 key값 검사
         self.assertIn('author', response.data)
         self.assertIn('created_date', response.data)
+        self.assertIn('postphoto_set', response.data)
+
+        # response의 postphoto_set값 검사
+        response_postphoto_set = response.data['postphoto_set']
+        self.assertIsInstance(response_postphoto_set, list)
+        for postphoto_object in response_postphoto_set:
+            self.assertIn('pk', postphoto_object)
+            self.assertIn('photo', postphoto_object)
+            self.assertIn('created_date', postphoto_object)
 
         # response의 author 값 검사
         response_author = response.data['author']
@@ -97,7 +106,7 @@ class PostTest(APITestCaseAuthMixin, APILiveServerTestCase):
         self.assertEqual(len(response.data), num)
 
         # 생성된 response의 author 필드가 pk가 아닌 dict 형태로 전달되는지 확인
-        for item in response.data :
+        for item in response.data:
             self.assertIn('author', item)
             self.assertIn('pk', item['author'])
             self.assertIn('username', item['author'])
