@@ -21,7 +21,7 @@ class PostSerializer(serializers.ModelSerializer):
     3. 테스트 및 postman 작동 확인
     """
 
-    author = UserSerializer()
+    author = UserSerializer(read_only=True)
 
     class Meta:
         model = Post
