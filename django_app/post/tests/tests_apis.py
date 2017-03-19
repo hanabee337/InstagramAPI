@@ -100,3 +100,13 @@ class PostTest(APITestCaseAuthMixin, APILiveServerTestCase):
 
     def test_post_destroy(self):
         pass
+
+
+class PostPhotoTest(APILiveServerTestCase):
+    def test_photo_add_to_post(self):
+        # 유저 생성 및 로그인
+
+        # 헤당 유저로 Post 생성
+
+        # 생성한 Post에 PostPhoto를 추가
+        pass
