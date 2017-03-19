@@ -117,3 +117,13 @@ class PostPhotoTest(APITestCaseAuthMixin, APILiveServerTestCase):
         self.assertEqual(post.author, user)
 
         # 생성한 Post에 PostPhoto를 추가
+        url = reverse('api:photo-create')
+
+        with open('test_image.jpg', 'rb') as fp:
+            data = {
+                'post': post.id,
+                'photo': fp,
+            }
+            response = self.client.post(url, data)
+            print(response.status_code)
+            print(response.data)
