@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework import permissions
 
 from post.models import Post
-from serializers import PostSerializer
+from post.serializers import PostSerializer
 
 
 class PostList(generics.ListCreateAPIView):
