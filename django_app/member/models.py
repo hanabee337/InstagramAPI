@@ -33,6 +33,46 @@ class MyUser(AbstractUser):
         through='Relationship',
     )
 
+    def follow(self, user):
+        """
+        H/W - 2017.03.17
+
+        1. 이미 follow한 사람일 경우, 안되도록 unique_together를 설정 (Relationship)
+        2. 상대방이 나를 block했을 경우 raise Exception(msg)
+        """
+
+        # Relationship.objecst.create(
+        #     from_to_user=self,
+        #     to_user=user,
+        # )
+        self.relations_from_user.create(
+            to_user=user,
+            relation_type=Relationship.TYPE_FOLLOW
+        )
+
+    def block(self, user):
+        pass
+
+    @property
+    def following(self):
+        relations = self.relations_from_user.filter(
+            relation_type=Relationship.TYPE_FOLLOW
+        )
+        # return relations
+        return MyUser.objects.filter(id__in=relations.values('to_user_id'))
+
+    @property
+    def followers(self):
+        pass
+
+    @property
+    def block_users(self):
+        pass
+
+    @property
+    def friends(self):
+        pass
+
 
 class Relationship(models.Model):
     TYPE_FOLLOW = 'f'
@@ -43,8 +83,8 @@ class Relationship(models.Model):
         (TYPE_BLOCK, 'Block'),
     )
 
-    from_user = models.ForeignKey(MyUser, related_name='relation_from_user')
-    to_user = models.ForeignKey(MyUser, related_name='relation_to_user')
+    from_user = models.ForeignKey(MyUser, related_name='relations_from_user')
+    to_user = models.ForeignKey(MyUser, related_name='relations_to_user')
     relation_type = models.CharField(max_length=1, choices=CHOICES_RELATION_TYPE)
     created_date = models.DateTimeField(auto_now_add=True)
 
