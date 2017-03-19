@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
-# Create your models here.
 class MyUser(AbstractUser):
     """
     1. 팔로우, 차단을 함께 만들 수 있는 중간자모델을 구현
@@ -26,4 +26,31 @@ class MyUser(AbstractUser):
             following: 내가 follow하고 있는 User들
             block_users: 내가 block한 User들
     """
-    pass
+    relation = models.ManyToManyField(
+        'self',
+        symmetrical=False,
+        related_name='relation_user_set',
+        through='Relationship',
+    )
+
+
+class Relationship(models.Model):
+    TYPE_FOLLOW = 'f'
+    TYPE_BLOCK = 'b'
+
+    CHOICES_RELATION_TYPE = (
+        (TYPE_FOLLOW, 'Follow'),
+        (TYPE_BLOCK, 'Block'),
+    )
+
+    from_user = models.ForeignKey(MyUser, related_name='relation_from_user')
+    to_user = models.ForeignKey(MyUser, related_name='relation_to_user')
+    relation_type = models.CharField(max_length=1, choices=CHOICES_RELATION_TYPE)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return 'Relation{} from {} to {}'.format(
+            self.get_relation_type_display(),
+            self.from_user.username,
+            self.to_user.username,
+        )
