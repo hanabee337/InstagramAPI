@@ -1,3 +1,5 @@
+import os
+
 from django.urls import NoReverseMatch
 from django.urls import resolve
 from django.urls import reverse
@@ -119,7 +121,8 @@ class PostPhotoTest(APITestCaseAuthMixin, APILiveServerTestCase):
         # 생성한 Post에 PostPhoto를 추가
         url = reverse('api:photo-create')
 
-        with open('test_image.jpg', 'rb') as fp:
+        file_path = os.path.join(os.path.dirname(__file__), 'test_image.jpg')
+        with open(file_path, 'rb') as fp:
             data = {
                 'post': post.id,
                 'photo': fp,
