@@ -7,10 +7,17 @@ Mission 1.
 """
 from django.views import View
 
+__all__ = (
+    'PostList',
+    'PostDetail',
+    'PostDelete',
+)
+
 
 # funcion-based view였다면, 아래와 같았을 것이다.
 # def post_list(request):
 #     pass
+
 
 class PostList(View):
     pass
