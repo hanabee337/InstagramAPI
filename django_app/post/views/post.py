@@ -33,6 +33,7 @@ Mission 4.
 """
 from django.shortcuts import render
 from django.views import View
+from django.views.generic import DetailView
 from django.views.generic import ListView
 
 from post.models import Post
@@ -61,11 +62,12 @@ class PostList(ListView):
     context_object_name = 'posts'
 
 
-class PostDetail(View):
+class PostDetail(DetailView):
     """
     하나의 Post object를 리턴해서 받는 view 구현
+    DetailView를 상속받아서 구현되도록 해보세요
     """
-    pass
+    model = Post
 
 
 class PostDelete(View):
