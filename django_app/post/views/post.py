@@ -18,6 +18,18 @@ Mission 2.
         4. 기존 프로젝트의 templates 폴더 통째로 복사
         5. PostList CBV에 get method 작성 및 내부 query 리턴
             (django CBV 문서 보면서 진행)
+
+Mission 4.
+    - Bower 설치
+        1. bower install(django_app 폴더에서)
+            $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+            $ sudo apt-get install nodejs
+            $ sudo npm install -g bower
+            $ bower -version
+            $ bower init
+            $ bower install jquery
+            $ bower install swiper
+        2. .gitignore에 bower_components 추가
 """
 from django.shortcuts import render
 from django.views import View

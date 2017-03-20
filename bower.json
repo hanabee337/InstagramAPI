@@ -1,0 +1,17 @@
+{
+  "name": "instagram_api",
+  "homepage": "https://github.com/hanabee337/InstagramAPI",
+  "authors": [
+    "hanabee337 <hanabee337@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

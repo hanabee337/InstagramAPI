@@ -7,6 +7,9 @@
 _Dockerifile*
 django_app/static/css/
 
+### bower packages
+bower_components/
+
 ### Django ###
 *.log
 *.pot
