@@ -33,6 +33,7 @@ Mission 4.
 """
 from django.shortcuts import render
 from django.views import View
+from django.views.generic import ListView
 
 from post.models import Post
 
@@ -48,7 +49,7 @@ __all__ = (
 #     pass
 
 
-class PostList(View):
+class PostList(ListView):
     """
     Mission 3.
         1. 데이터추가
@@ -56,12 +57,7 @@ class PostList(View):
         2. post_list.html에서 posts변수를 loop하며 각 post의 postphoto_set.all을 loop
             postphoto_set을 내부에서 loop하며 내부 loop아이템의 photo.url을 이용해 이미지를 출력
     """
-    def get(self, request):
-        posts = Post.objects.all()
-        context = {
-            'posts': posts
-        }
-        return render(request, 'post/post_list.html', context)
+    model = Post
 
 
 class PostDetail(View):
