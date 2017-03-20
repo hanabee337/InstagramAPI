@@ -5,6 +5,7 @@
 .conf/
 .conf-secret/
 _Dockerifile*
+django_app/static/css/
 
 ### Django ###
 *.log
