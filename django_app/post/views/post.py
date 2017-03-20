@@ -58,6 +58,7 @@ class PostList(ListView):
             postphoto_set을 내부에서 loop하며 내부 loop아이템의 photo.url을 이용해 이미지를 출력
     """
     model = Post
+    context_object_name = 'posts'
 
 
 class PostDetail(View):
