@@ -31,17 +31,22 @@ Mission 4.
             $ bower install swiper
         2. .gitignore에 bower_components 추가
 """
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import DetailView
 from django.views.generic import ListView
 
+from post.forms import PostForm
 from post.models import Post
+from post.models import PostComment
+from post.models import PostPhoto
 
 __all__ = (
     'PostList',
     'PostDetail',
     'PostDelete',
+    'PostCreate',
 )
 
 
@@ -52,6 +57,7 @@ __all__ = (
 
 class PostList(ListView):
     """
+    2017.03.20
     Mission 3.
         1. 데이터추가
             Postman으로 Post두개 만들고, 각각의 Post에 PostPhoto를 3개 추가
@@ -64,6 +70,7 @@ class PostList(ListView):
 
 class PostDetail(DetailView):
     """
+    2017.03.20
     Mission 5.
         하나의 Post object를 리턴해서 받는 view 구현
         DetailView를 상속받아서 구현되도록 해보세요
@@ -78,10 +85,50 @@ class PostDelete(View):
 class PostCreate(View):
     """
     2017.03.21
-    Mission 1
+    Mission 1.
         PostForm을 사용
             fields
                 content
                 photos
+    Mission 2.
+        Post 요청을 받았을 때,
+        1. 해당 request.user를 author로 하는 Post 인스턴스 생성
+        2. 만약 form.cleaned_data['content']가 빈 값이 아니면 PostComment 인스턴스 생성
+        3. request.FILES.getlist('photos')를 loop하며 PostPhoto 인스턴스 생성
+        4. return redirect('post:post-list')
     """
-    pass
+    form_class = PostForm
+    template_name = 'post/post_create.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        context = {
+            'form': form,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        post = Post.objects.create(author=request.user)
+
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            content = form.cleaned_data.get('content', '').strip()
+            if content != '':
+                PostComment.objects.create(
+                    author=request.user,
+                    post=post,
+                    content=content,
+                )
+
+            # print(request.POST)
+            # print(request.FILES)
+            # print(content)
+
+            for file in request.FILES.getlist('photos'):
+                PostPhoto.objects.create(
+                    post=post,
+                    photo=file,
+                )
+            return redirect('post:post-list')
+        else:
+            return HttpResponse(form.errors)
