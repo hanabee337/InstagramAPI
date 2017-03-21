@@ -73,3 +73,15 @@ class PostDetail(DetailView):
 
 class PostDelete(View):
     pass
+
+
+class PostCreate(View):
+    """
+    2017.03.21
+    Mission 1
+        PostForm을 사용
+            fields
+                content
+                photos
+    """
+    pass
