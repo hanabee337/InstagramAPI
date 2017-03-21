@@ -35,6 +35,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import DetailView
+from django.views.generic import FormView
 from django.views.generic import ListView
 
 from post.forms import PostForm
@@ -82,7 +83,7 @@ class PostDelete(View):
     pass
 
 
-class PostCreate(View):
+class PostCreate(FormView):
     """
     2017.03.21
     Mission 1.
@@ -96,39 +97,71 @@ class PostCreate(View):
         2. 만약 form.cleaned_data['content']가 빈 값이 아니면 PostComment 인스턴스 생성
         3. request.FILES.getlist('photos')를 loop하며 PostPhoto 인스턴스 생성
         4. return redirect('post:post-list')
+
+    Mission 3.
+        FormView를 상속받아  구현
+
+        attributes
+            template_name
+            form_class
+            success_url
+
+        method
+            form_valid(self, form)
+                request는 self.request로 접근 가능
+                form.cleaned_data는 바로 사용 가능
+                redirect는 정의해줄 필요 없음
     """
     form_class = PostForm
     template_name = 'post/post_create.html'
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        context = {
-            'form': form,
-        }
-        return render(request, self.template_name, context)
+    # def get(self, request, *args, **kwargs):
+    #     form = self.form_class()
+    #     context = {
+    #         'form': form,
+    #     }
+    #     return render(request, self.template_name, context)
+    #
+    # def post(self, request, *args, **kwargs):
+    #     post = Post.objects.create(author=request.user)
+    #
+    #     form = self.form_class(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         content = form.cleaned_data.get('content', '').strip()
+    #         if content != '':
+    #             PostComment.objects.create(
+    #                 author=request.user,
+    #                 post=post,
+    #                 content=content,
+    #             )
+    #
+    #         # print(request.POST)
+    #         # print(request.FILES)
+    #         # print(content)
+    #
+    #         for file in request.FILES.getlist('photos'):
+    #             PostPhoto.objects.create(
+    #                 post=post,
+    #                 photo=file,
+    #             )
+    #         return redirect('post:post-list')
+    #     else:
+    #         return HttpResponse(form.errors)
 
-    def post(self, request, *args, **kwargs):
-        post = Post.objects.create(author=request.user)
+    success_url = '/post/list/'
 
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            content = form.cleaned_data.get('content', '').strip()
-            if content != '':
-                PostComment.objects.create(
-                    author=request.user,
-                    post=post,
-                    content=content,
-                )
-
-            # print(request.POST)
-            # print(request.FILES)
-            # print(content)
-
-            for file in request.FILES.getlist('photos'):
+    def form_valid(self, form):
+        post = Post.objects.create(author=self.request.user)
+        content = form.cleaned_data.get('content', '').strip()
+        if content != '':
+            PostComment.objects.create(
+                author=self.request.user,
+                post=post,
+                content=content,
+            )
+            for file in self.request.FILES.getlist('photos'):
                 PostPhoto.objects.create(
                     post=post,
                     photo=file,
                 )
-            return redirect('post:post-list')
-        else:
-            return HttpResponse(form.errors)
+        return super().form_valid(form)
