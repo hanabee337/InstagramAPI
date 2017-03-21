@@ -64,8 +64,9 @@ class PostList(ListView):
 
 class PostDetail(DetailView):
     """
-    하나의 Post object를 리턴해서 받는 view 구현
-    DetailView를 상속받아서 구현되도록 해보세요
+    Mission 5.
+        하나의 Post object를 리턴해서 받는 view 구현
+        DetailView를 상속받아서 구현되도록 해보세요
     """
     model = Post
 

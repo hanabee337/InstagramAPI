@@ -1,4 +1,5 @@
 from .post import *
+from .comment import *
 
 # """
 # MEDIA 세팅
