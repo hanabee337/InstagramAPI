@@ -18,7 +18,9 @@
 <script>
 	<!--var swiper = new Swiper('.swiper-container');-->
     $(document).ready(function () {
-        new Swiper('.swiper-container');
+        new Swiper('.swiper-container', {
+            autoHeight: true,
         });
+    });
 </script>
 {% endblock %}
