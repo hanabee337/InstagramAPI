@@ -33,7 +33,9 @@ Mission 4.
 """
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import FormView
 from django.views.generic import ListView
@@ -77,10 +79,6 @@ class PostDetail(DetailView):
         DetailView를 상속받아서 구현되도록 해보세요
     """
     model = Post
-
-
-class PostDelete(View):
-    pass
 
 
 class PostCreate(FormView):
@@ -165,3 +163,14 @@ class PostCreate(FormView):
                     photo=file,
                 )
         return super().form_valid(form)
+
+
+class PostDelete(DeleteView):
+    """
+    2017.03.21
+    Mission 4.
+        DeleteView를 상속받아 구현해보세요
+    """
+    model = Post
+
+    success_url = reverse_lazy('post:post-list')
