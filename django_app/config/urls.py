@@ -18,11 +18,14 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 
+
 from post.urls import apis as post_apis_urls
 from post.urls import views as post_urls
+from member.urls import apis as member_apis_urls
 
 api_urlpatterns = [
     url(r'^post/', include(post_apis_urls)),
+    url(r'^member/', include(member_apis_urls)),
 ]
 
 urlpatterns = [
