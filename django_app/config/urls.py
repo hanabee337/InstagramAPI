@@ -18,7 +18,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 
-
+from member.apis.token import LogoutView
 from post.urls import apis as post_apis_urls
 from post.urls import views as post_urls
 from member.urls import apis as member_apis_urls
@@ -32,6 +32,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^post/', include(post_urls)),
     url(r'^api/', include(api_urlpatterns, namespace='api')),
+
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/logout/', LogoutView.as_view()),
 ]
 
 urlpatterns += static(

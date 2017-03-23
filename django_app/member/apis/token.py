@@ -1,3 +1,6 @@
+from django.contrib.auth import logout as django_logout
+from django.core.exceptions import ObjectDoesNotExist
+from rest_auth.views import LogoutView as RestLogoutView
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.response import Response
@@ -5,7 +8,21 @@ from rest_framework.views import APIView
 
 __all__ = (
     'DeleteToken',
+    'LogoutView',
 )
+
+
+class LogoutView(RestLogoutView):
+    def logout(self, request):
+        try:
+            request.user.auth_token.delete()
+        except (AttributeError, ObjectDoesNotExist):
+            pass
+
+        django_logout(request)
+
+        return Response({"detail": _("Successfully logged out.")},
+                        status=status.HTTP_200_OK)
 
 
 class DeleteToken(APIView):
