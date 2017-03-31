@@ -33,8 +33,8 @@ urlpatterns = [
     url(r'^post/', include(post_urls)),
     url(r'^api/', include(api_urlpatterns, namespace='api')),
 
+    url(r'^rest-auth/logout/$', LogoutView.as_view()),
     url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^rest-auth/logout/', LogoutView.as_view()),
 ]
 
 urlpatterns += static(

@@ -1,5 +1,6 @@
 from django.contrib.auth import logout as django_logout
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import ugettext_lazy as _
 from rest_auth.views import LogoutView as RestLogoutView
 from rest_framework import permissions
 from rest_framework import status
@@ -17,7 +18,7 @@ class LogoutView(RestLogoutView):
         try:
             request.user.auth_token.delete()
         except (AttributeError, ObjectDoesNotExist):
-            pass
+            return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
         django_logout(request)
 
