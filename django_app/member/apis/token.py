@@ -34,9 +34,9 @@ class DeleteToken(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
-        # print(request.auth)
-        # print(type(request.auth))
-        # cur_token = Token.objects.get(ket=request.auth.key)
+        print(request.auth)
+        print(type(request.auth))
+        # cur_token = Token.objects.get(key=request.auth.key)
         # print(cur_token)
         request.auth.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
